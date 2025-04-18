@@ -5,12 +5,26 @@
 ---
 
 ## 🏗️ 프로젝트 구성
+```
 WIDER-Server/
-├── spring-backend/       # Spring Boot 서비스 (사용자 관리, 세션, 통계, 리포트 등)
-├── chatbot-api/          # FastAPI 챗봇 서버 (LLM 기반 질문 생성 및 응답 평가)
-├── docker-compose.yaml    # 전체 서버 구동용 도커 설정
-└── README.md             # 현재 문서
-
+├── wider/                            # Spring Boot 백엔드 (Java)
+│   ├── controller/                   # REST API 컨트롤러
+│   ├── config/                       # 전역 설정 (CORS, Swagger, Security 등)
+│   └── model/
+│       ├── entity/                   # JPA Entity 클래스
+│       ├── dto/                      # 요청/응답 DTO 클래스
+│       ├── dao/                      # DAO 인터페이스
+│       ├── repository/               # JPA Repository
+│       └── service/                  # 비즈니스 로직 서비스
+│
+├── chatbot-api/                      # FastAPI 챗봇 서버 (Python)
+│   ├── src/                          # main.py 및 라우터, 평가 로직 등
+│   ├── prompts/                      # 프롬프트 템플릿 (YAML)
+│   └── data/                         # 대화 로그, 캐시, 저장용 데이터 등
+│
+├── docker-compose.yaml               # 전체 백엔드 통합 실행을 위한 도커 컴포즈
+└── README.md                         # 프로젝트 문서
+```
 ---
 
 ## 🧠 주요 기능
