@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ac.kr.hufs.wider.model.DAO.UserDao;
-import ac.kr.hufs.wider.model.Entity.User;
+import ac.kr.hufs.wider.model.Entity.Users;
 import ac.kr.hufs.wider.model.Repository.UserRepository;
 
 @Service
@@ -15,14 +15,14 @@ public class UserDaoImpl implements UserDao{
     private UserRepository userRepository;
 
     @Override
-    public Optional<User> findById(String userId) {
+    public Optional<Users> findById(String userId) {
         return userRepository.findById(userId);
         
     }
 
     
     @Override
-    public User save(User user) {
+    public Users save(Users user) {
         return userRepository.save(user);
     }
 

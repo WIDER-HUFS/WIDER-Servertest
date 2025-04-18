@@ -17,7 +17,7 @@ public class BloomProgressStatsDaoImpl implements BloomProgressStatsDao{
 
     @Override
     public List<BloomProgressStats> findByUserId(String userId) {
-        return bloomProgressStatsRepository.findbyUser_UserId(userId);
+        return bloomProgressStatsRepository.findByUser_UserId(userId);
     }
 
     @Override

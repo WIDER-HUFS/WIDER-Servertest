@@ -6,6 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +21,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Question {
     @Id
+    @Column(name = "session_id")
     private String sessionId; // 어떤 세션에서 나온 질문인지
+
     @Id
     private int bloomLevel; // Bloom 단계
+
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    private SessionLog sessionLog;
 
     private String topic; // 질문이 속한 주제
 

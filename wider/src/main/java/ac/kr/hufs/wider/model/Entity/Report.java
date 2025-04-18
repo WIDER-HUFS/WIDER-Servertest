@@ -27,7 +27,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; // 리포트를 생성한 사용자
+    private Users user; // 리포트를 생성한 사용자
 
     private String topic; // 주제명
     @Column(columnDefinition = "TEXT")

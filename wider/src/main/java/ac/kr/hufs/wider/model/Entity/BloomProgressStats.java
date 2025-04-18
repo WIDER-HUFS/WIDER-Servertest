@@ -27,7 +27,7 @@ public class BloomProgressStats {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // 사용자
+    private Users user; // 사용자
 
     @ManyToOne
     @JoinColumn(name = "session_id", nullable = false)

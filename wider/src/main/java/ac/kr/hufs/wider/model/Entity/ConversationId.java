@@ -1,5 +1,7 @@
 package ac.kr.hufs.wider.model.Entity;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConversationId {
+public class ConversationId implements Serializable{
     private String sessionId; // 세션 ID
     private int messageOrder;
 }

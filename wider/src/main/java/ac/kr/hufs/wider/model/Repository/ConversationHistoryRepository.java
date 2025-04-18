@@ -1,6 +1,7 @@
 package ac.kr.hufs.wider.model.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,8 @@ import ac.kr.hufs.wider.model.Entity.ConversationId;
 
 @Repository
 public interface ConversationHistoryRepository extends JpaRepository<ConversationHistory, ConversationId>{
-    List<ConversationHistory> findBySessionIdOrderByMessageOrderAsc(String sessionId);
-    int countBySessionId(String sessionId); // 메시지 순번 증가 시 필요
+    // 복합키 전체로 조회
+    Optional<ConversationHistory> findById(ConversationId id);
+    List<ConversationHistory> findById_SessionIdOrderById_MessageOrderAsc(String sessionId);
+    int countById_SessionId(String sessionId); // 메시지 순번 증가 시 필요
 }

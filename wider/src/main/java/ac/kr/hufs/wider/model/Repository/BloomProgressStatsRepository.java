@@ -12,15 +12,16 @@ import ac.kr.hufs.wider.model.Entity.BloomProgressStats;
 
 @Repository
 public interface BloomProgressStatsRepository extends JpaRepository<BloomProgressStats, Long>{
-    List<BloomProgressStats> findbyUser_UserId(String userId);
+    List<BloomProgressStats> findByUser_UserId(String userId);
 
     @Query("""
-        SELECT 
-            b.completedMonth AS month, 
-            b.finalBloomLevel AS level, 
+        SELECT NEW map(
+            MONTH(b.completedMonth) AS month,
+            b.finalBloomLevel AS level,
             COUNT(b) AS count
-        FROM BloomProgressStat b
-        WHERE FUNCTION('MONTH', b.completedMonth) = :month
+        )
+        FROM BloomProgressStats b
+        WHERE MONTH(b.completedMonth) = :month
         GROUP BY b.completedMonth, b.finalBloomLevel
         ORDER BY b.completedMonth, b.finalBloomLevel
     """)

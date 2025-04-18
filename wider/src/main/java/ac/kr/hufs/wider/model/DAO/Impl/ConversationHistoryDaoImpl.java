@@ -16,12 +16,12 @@ public class ConversationHistoryDaoImpl implements ConversationHistoryDao{
 
     @Override
     public int countBySession(String sessionId) {
-        return conversationHistoryRepository.countBySessionId(sessionId);
+        return conversationHistoryRepository.countById_SessionId(sessionId);
     }
 
     @Override
     public List<ConversationHistory> findAll(String sessionId) {
-        return conversationHistoryRepository.findBySessionIdOrderByMessageOrderAsc(sessionId);
+        return conversationHistoryRepository.findById_SessionIdOrderById_MessageOrderAsc(sessionId);
     }
 
     @Override

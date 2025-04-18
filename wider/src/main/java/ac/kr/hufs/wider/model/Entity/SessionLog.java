@@ -23,7 +23,7 @@ public class SessionLog {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; // 이 세션을 만든 사용자(대화를 하는 사람)
+    private Users user; // 이 세션을 만든 사용자(대화를 하는 사람)
     
     private String topic; // 해당 세션의 주제
     private LocalDateTime startedAt = LocalDateTime.now(); // 세션 시작 시간
