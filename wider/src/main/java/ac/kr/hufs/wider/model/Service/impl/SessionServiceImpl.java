@@ -8,62 +8,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ac.kr.hufs.wider.model.DAO.SessionLogDao;
 import ac.kr.hufs.wider.model.Entity.SessionLog;
-import ac.kr.hufs.wider.model.Repository.SessionRepository;
 import ac.kr.hufs.wider.model.Service.SessionService;
 
 @Service
 @Transactional
 public class SessionServiceImpl implements SessionService {
 
-    private final SessionRepository sessionRepository;
+    private final SessionLogDao sessionLogDao;
 
     @Autowired
-    public SessionServiceImpl(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
+    public SessionServiceImpl(SessionLogDao sessionLogDao) {
+        this.sessionLogDao = sessionLogDao;
     }
 
     @Override
     public SessionLog createSession(SessionLog session) {
-        return sessionRepository.save(session);
+        return sessionLogDao.save(session);
     }
 
     @Override
     public Optional<SessionLog> getSessionById(String sessionId) {
-        return sessionRepository.findById(sessionId);
+        return sessionLogDao.findById(sessionId);
     }
 
     @Override
     public List<SessionLog> getSessionsByUserId(String userId) {
-        return sessionRepository.findByUserId(userId);
+        return sessionLogDao.findByUserId(userId);
     }
 
     @Override
     public SessionLog updateSession(SessionLog session) {
-        if (!sessionRepository.existsById(session.getSessionId())) {
+        if (!sessionLogDao.findById(session.getSessionId()).isPresent()) {
             throw new IllegalArgumentException("Session not found with id: " + session.getSessionId());
         }
-        return sessionRepository.save(session);
+        return sessionLogDao.save(session);
     }
 
     @Override
     public SessionLog completeSession(String sessionId) {
-        SessionLog session = sessionRepository.findById(sessionId)
+        SessionLog session = sessionLogDao.findById(sessionId)
             .orElseThrow(() -> new IllegalArgumentException("Session not found with id: " + sessionId));
         
         session.setCompleted(true);
         session.setCompletedAt(LocalDateTime.now());
-        return sessionRepository.save(session);
+        return sessionLogDao.save(session);
     }
 
     @Override
     public void deleteSession(String sessionId) {
-        sessionRepository.deleteById(sessionId);
+        sessionLogDao.deleteById(sessionId);
     }
 
     @Override
     public void deleteSessionsByUserId(String userId) {
         List<SessionLog> sessions = getSessionsByUserId(userId);
-        sessionRepository.deleteAll(sessions);
+        sessionLogDao.deleteAll(sessions);
     }
 } 

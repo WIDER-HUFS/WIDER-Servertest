@@ -7,53 +7,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ac.kr.hufs.wider.model.DAO.ConversationHistoryDao;
 import ac.kr.hufs.wider.model.Entity.ConversationHistory;
 import ac.kr.hufs.wider.model.Entity.ConversationId;
-import ac.kr.hufs.wider.model.Repository.ConversationRepository;
 import ac.kr.hufs.wider.model.Service.ConversationService;
 
 @Service
 @Transactional
 public class ConversationServiceImpl implements ConversationService {
 
-    private final ConversationRepository conversationRepository;
+    private final ConversationHistoryDao conversationHistoryDao;
 
     @Autowired
-    public ConversationServiceImpl(ConversationRepository conversationRepository) {
-        this.conversationRepository = conversationRepository;
+    public ConversationServiceImpl(ConversationHistoryDao conversationHistoryDao) {
+        this.conversationHistoryDao = conversationHistoryDao;
     }
 
     @Override
     public ConversationHistory createConversation(ConversationHistory conversation) {
-        return conversationRepository.save(conversation);
+        return conversationHistoryDao.save(conversation);
     }
 
     @Override
     public Optional<ConversationHistory> getConversationById(ConversationId conversationId) {
-        return conversationRepository.findById(conversationId);
+        return conversationHistoryDao.findById(conversationId);
     }
 
     @Override
     public List<ConversationHistory> getConversationsBySessionId(String sessionId) {
-        return conversationRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
+        return conversationHistoryDao.findBySessionIdOrderByTimestampAsc(sessionId);
     }
 
     @Override
     public ConversationHistory updateConversation(ConversationHistory conversation) {
-        if (!conversationRepository.existsById(conversation.getId())) {
+        if (!conversationHistoryDao.findById(conversation.getId()).isPresent()) {
             throw new IllegalArgumentException("Conversation not found with id: " + conversation.getId());
         }
-        return conversationRepository.save(conversation);
+        return conversationHistoryDao.save(conversation);
     }
 
     @Override
     public void deleteConversation(ConversationId conversationId) {
-        conversationRepository.deleteById(conversationId);
+        conversationHistoryDao.deleteById(conversationId);
     }
 
     @Override
     public void deleteConversationsBySessionId(String sessionId) {
         List<ConversationHistory> conversations = getConversationsBySessionId(sessionId);
-        conversationRepository.deleteAll(conversations);
+        conversationHistoryDao.deleteAll(conversations);
     }
 } 

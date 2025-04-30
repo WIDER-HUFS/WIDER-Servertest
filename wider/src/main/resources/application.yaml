@@ -82,3 +82,7 @@ spring:
 #   paths-to-match:
 #     - /**
     
+jwt:
+  secret: your-secret-key-here-must-be-at-least-512-bits-long
+  expiration: 86400000 # 24시간
+    

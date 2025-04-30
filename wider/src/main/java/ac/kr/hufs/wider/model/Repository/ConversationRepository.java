@@ -10,5 +10,5 @@ import ac.kr.hufs.wider.model.Entity.ConversationId;
 
 @Repository
 public interface ConversationRepository extends JpaRepository<ConversationHistory, ConversationId> {
-    List<ConversationHistory> findBySessionIdOrderByCreatedAtAsc(String sessionId);
+    List<ConversationHistory> findBySessionLog_SessionIdOrderByTimestampAsc(String sessionId);
 } 
