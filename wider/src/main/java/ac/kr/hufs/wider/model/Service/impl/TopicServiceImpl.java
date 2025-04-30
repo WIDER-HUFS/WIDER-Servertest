@@ -8,51 +8,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ac.kr.hufs.wider.model.DAO.TopicDao;
 import ac.kr.hufs.wider.model.Entity.DailyTopic;
-import ac.kr.hufs.wider.model.Repository.TopicRepository;
 import ac.kr.hufs.wider.model.Service.TopicService;
 
 @Service
 @Transactional
 public class TopicServiceImpl implements TopicService {
 
-    private final TopicRepository topicRepository;
+    private final TopicDao topicDao;
 
     @Autowired
-    public TopicServiceImpl(TopicRepository topicRepository) {
-        this.topicRepository = topicRepository;
+    public TopicServiceImpl(TopicDao topicDao) {
+        this.topicDao = topicDao;
     }
 
     @Override
     public DailyTopic createTopic(DailyTopic topic) {
-        return topicRepository.save(topic);
+        return topicDao.save(topic);
     }
 
     @Override
     public Optional<DailyTopic> getTopicByDate(LocalDate date) {
-        return topicRepository.findById(date);
+        return topicDao.findById(date);
     }
 
     @Override
     public List<DailyTopic> getAllTopics() {
-        return topicRepository.findAll();
+        return topicDao.findAll();
     }
 
     @Override
     public DailyTopic updateTopic(DailyTopic topic) {
-        if (!topicRepository.existsById(topic.getTopicDate())) {
+        if (!topicDao.existsById(topic.getTopicDate())) {
             throw new IllegalArgumentException("Topic not found for date: " + topic.getTopicDate());
         }
-        return topicRepository.save(topic);
+        return topicDao.save(topic);
     }
 
     @Override
     public void deleteTopic(LocalDate date) {
-        topicRepository.deleteById(date);
+        topicDao.deleteById(date);
     }
 
     @Override
     public Optional<DailyTopic> getTodayTopic() {
-        return topicRepository.findFirstByOrderByTopicDateDesc();
+        return topicDao.findFirstByOrderByTopicDateDesc();
     }
 } 

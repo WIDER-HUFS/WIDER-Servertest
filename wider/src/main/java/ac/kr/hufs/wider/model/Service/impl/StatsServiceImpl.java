@@ -8,62 +8,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ac.kr.hufs.wider.model.DAO.StatsDao;
 import ac.kr.hufs.wider.model.Entity.BloomProgressStats;
-import ac.kr.hufs.wider.model.Repository.StatsRepository;
 import ac.kr.hufs.wider.model.Service.StatsService;
 
 @Service
 @Transactional
 public class StatsServiceImpl implements StatsService {
 
-    private final StatsRepository statsRepository;
+    private final StatsDao statsDao;
 
     @Autowired
-    public StatsServiceImpl(StatsRepository statsRepository) {
-        this.statsRepository = statsRepository;
+    public StatsServiceImpl(StatsDao statsDao) {
+        this.statsDao = statsDao;
     }
 
     @Override
     public BloomProgressStats createStats(BloomProgressStats stats) {
-        return statsRepository.save(stats);
+        return statsDao.save(stats);
     }
 
     @Override
     public Optional<BloomProgressStats> getStatsById(Long id) {
-        return statsRepository.findById(id);
+        return statsDao.findById(id);
     }
 
     @Override
     public List<BloomProgressStats> getStatsByUserId(String userId) {
-        return statsRepository.findByUserId(userId);
+        return statsDao.findByUser_UserId(userId);
     }
 
     @Override
     public Optional<BloomProgressStats> getStatsBySessionId(String sessionId) {
-        return statsRepository.findBySessionId(sessionId);
+        return statsDao.findBySession_SessionId(sessionId);
     }
 
     @Override
     public List<BloomProgressStats> getStatsByUserIdAndMonth(String userId, LocalDate month) {
-        return statsRepository.findByUserIdAndCompletedMonth(userId, month);
+        return statsDao.findByUser_UserIdAndCompletedMonth(userId, month);
     }
 
     @Override
     public BloomProgressStats updateStats(BloomProgressStats stats) {
-        if (!statsRepository.existsById(stats.getId())) {
+        if (!statsDao.existsById(stats.getId())) {
             throw new IllegalArgumentException("Stats not found with id: " + stats.getId());
         }
-        return statsRepository.save(stats);
+        return statsDao.save(stats);
     }
 
     @Override
     public void deleteStats(Long id) {
-        statsRepository.deleteById(id);
+        statsDao.deleteById(id);
     }
 
     @Override
     public void deleteStatsByUserId(String userId) {
         List<BloomProgressStats> stats = getStatsByUserId(userId);
-        statsRepository.deleteAll(stats);
+        statsDao.deleteAll(stats);
     }
 } 
