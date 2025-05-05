@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ac.kr.hufs.wider.model.DTO.ChangePasswordDTO;
 import ac.kr.hufs.wider.model.DTO.SignInDTO;
 import ac.kr.hufs.wider.model.DTO.SignUpDTO;
 import ac.kr.hufs.wider.model.Entity.Users;
@@ -48,12 +49,14 @@ public class UserController {
         
         return ResponseEntity.ok(response); // HTTP 200 + 응답 본문
     }
-    
-    @GetMapping("/{userId}")
-    public Users getUser(@PathVariable String userId) {
+
+
+    @GetMapping("/{userId}/info")
+    public Users getUserInfo(@PathVariable String userId) {
         return userService.getUserById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
     }
+
 
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestBody SignInDTO signInDTO) {
@@ -67,5 +70,11 @@ public class UserController {
         // 클라이언트에서 토큰을 삭제하는 코드 별도로 필요
         // 서버에서는 별도의 처리 X
         return ResponseEntity.ok().body("로그아웃 되었습니다.");
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestHeader("Authorization") String token, @RequestBody ChangePasswordDTO changePasswordDTO){
+        userService.changePassword(token, changePasswordDTO.getCurrentPassword(), changePasswordDTO.getNewPassword1(), changePasswordDTO.getNewPassword2());
+        return "비밀번호 변경 완료";
     }
 }

@@ -21,6 +21,9 @@ public interface UserService {
     
     // 사용자 정보 업데이트
     Users updateUser(SignUpDTO dto);
+
+    // 사용자 비밀번호 변경
+    void changePassword(String token, String currentPassword, String newPassword1, String newPassword2);
     
     // 사용자 삭제
     void deleteUser(String userId);

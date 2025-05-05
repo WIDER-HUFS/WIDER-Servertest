@@ -37,24 +37,39 @@ public class JwtService {
     }
 
     public Boolean validateToken(String token, String userId) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         final String username = extractUsername(token);
         return (username.equals(userId) && !isTokenExpired(token));
     }
 
     public String extractUsername(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         return extractClaim(token, Claims::getSubject);
     }
 
     public Date extractExpiration(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         return extractClaim(token, Claims::getExpiration);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
