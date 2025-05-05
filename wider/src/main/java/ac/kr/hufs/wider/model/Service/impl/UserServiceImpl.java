@@ -12,6 +12,7 @@ import ac.kr.hufs.wider.model.DAO.UserDao;
 import ac.kr.hufs.wider.model.DTO.SignUpDTO;
 import ac.kr.hufs.wider.model.Entity.Users;
 import ac.kr.hufs.wider.model.Service.UserService;
+import ac.kr.hufs.wider.service.JwtService;
 
 @Service
 @Transactional
@@ -19,11 +20,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
-
+    private final JwtService jwtService;
     @Autowired
-    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -66,6 +68,20 @@ public class UserServiceImpl implements UserService {
         user.setBirthDate(dto.getBirthDate());
         user.setGender(Users.Gender.valueOf(dto.getGender().toUpperCase()));
         return userDao.save(user);
+    }
+
+    @Override
+    public void changePassword(String token, String currentPassword, String newPassword1, String newPassword2) {
+        String userId = jwtService.extractUsername(token);
+        Optional<Users> user = userDao.findById(userId);
+        if (!passwordEncoder.matches(currentPassword, user.get().getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+        if (!newPassword1.equals(newPassword2)) {
+            throw new IllegalArgumentException("새 비밀번호가 일치하지 않습니다.");
+        }
+        user.get().setPassword(passwordEncoder.encode(newPassword1));
+        userDao.save(user.get());
     }
 
     @Override
