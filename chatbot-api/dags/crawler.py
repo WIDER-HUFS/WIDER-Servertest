@@ -9,6 +9,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
+from fastapi import FastAPI, Depends
 
 # 환경 설정
 load_dotenv()
