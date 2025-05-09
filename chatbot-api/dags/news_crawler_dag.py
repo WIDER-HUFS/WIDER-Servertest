@@ -15,6 +15,7 @@ print(f"Project root: {project_root}")
 
 load_dotenv()
 
+
 # Debug: Print environment variables (remove in production)
 print(f"MySQL Host: {os.getenv('MYSQL_HOST')}")
 print(f"MySQL User: {os.getenv('MYSQL_USER')}")
