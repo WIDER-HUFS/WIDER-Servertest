@@ -5,6 +5,7 @@ import sys
 import os
 import pymysql
 from dotenv import load_dotenv
+from pendulum import timezone
 
 # Add the project root directory to the Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -21,10 +22,11 @@ print(f"MySQL Database: {os.getenv('MYSQL_DATABASE')}")
 
 from crawler import main as crawler_main
 
+local_tz = timezone("Asia/Seoul")
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2024, 1, 1),
+    'start_date': datetime(2025, 5, 10, tzinfo=local_tz),
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
@@ -73,7 +75,7 @@ with DAG(
     default_args=default_args,
     description='Daily news crawling and topic extraction',
     schedule='0 0 * * *',  # Run daily at midnight
-    catchup=False,
+    catchup=False
 ) as dag:
 
     crawl_and_set_topic = PythonOperator(
