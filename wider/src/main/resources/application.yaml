@@ -8,7 +8,7 @@ server:
     # error:
     #     whitelabel:
     #         enabled: false
-    #     path: /errors
+    #     path: /errors # 에러 페이지 경로
 
 # cloud:
 #     aws:
