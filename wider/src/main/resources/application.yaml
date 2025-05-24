@@ -1,4 +1,6 @@
 server:
+    port: 8080
+    address: 0.0.0.0
     servlet:
         # 한글깨짐 처리 
         encoding:
