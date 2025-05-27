@@ -10,11 +10,11 @@ import java.util.List;
 
 @Repository
 public interface BloomProgressStatsRepository extends JpaRepository<BloomProgressStats, Long> {
-
-    // 기존 Map 반환 메서드는 삭제하거나 주석 처리하세요
+    // Spring Data JPA 네이밍 컨벤션에 맞춰 메서드명 변경
+    List<BloomProgressStats> findByUserUserId(String userId);
 
     @Query("""
-        SELECT new ac.kr.hufs.wider.model.DTO.MonthlyBloomLevelCountDto(
+        SELECT new ac.kr.hufs.wider.model.DTO.MonthlyBloomLevelCountDTO(
              b.completedMonth,
              b.finalBloomLevel,
              COUNT(b)
